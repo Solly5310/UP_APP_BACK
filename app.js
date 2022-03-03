@@ -3,7 +3,6 @@ const Axios = require("axios");
 const express = require("express");
 const cors = require("cors");
 const databaseRouter = require(`${__dirname}/routes/databaseRoutes.js`);
-
 //instantiating an instance of express
 
 //just whitelists all origins where we get a request from the server
@@ -44,12 +43,6 @@ app.get("/transactions", async (req, res) => {
   const { data } = await Axios.get(url, options);
   const relativeData = { ...data, links: relativify(data.links) };
   res.send(relativeData);
-});
-
-app.post("/webhooks", (req, res) => {
-  console.log(req.body);
-  res.send("thanks webhook");
-  io.emit("webhook", req.body);
 });
 
 app.use("/database", databaseRouter);

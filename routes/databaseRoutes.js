@@ -1,9 +1,7 @@
 const express = require("express");
 const app = require("../app");
 const router = express.Router();
-const mongoose = require("mongoose");
-
-const Test = require(`${__dirname}/../models/user.js`);
+const database = require(`${__dirname}/../controllers/databaseController.js`);
 //const databaseController = require(`${__dirname}/../controllers/databaseController.js
 //`);
 /*
@@ -14,17 +12,8 @@ const testSchema = new mongoose.Schema({
 const testing = mongoose.model("Test", testSchema);
 */
 
-let testDatabase = async (req, res) => {
-  try {
-    console.log("request received");
-    const yes = await Test.create({ name: "Sol" }).then(() => {
-      res.status(200).json({ status: "OK", message: "Getting there!" });
-    });
-  } catch (e) {
-    res.status(400).json({ status: "fail", message: err });
-  }
-};
+router.route("/").get(database.testDatabase).post(database.submitTransaction);
 
-router.route("/").get(testDatabase);
-
+router.route("/snapshots").get(database.snapshotTransactions);
+router.route("/saved").get(database.savedTransactions);
 module.exports = router;

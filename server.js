@@ -1,6 +1,6 @@
 require("dotenv").config();
 const cors = require("cors");
-const socketIO = require("socket.io");
+
 const http = require("http");
 const mongoose = require("mongoose");
 const express = require("express");
@@ -14,6 +14,12 @@ const io = require("socket.io")(server, {
     origin: "*",
     methods: ["GET", "POST"],
   },
+});
+
+app.post("/webhooks", (req, res) => {
+  console.log(req.body);
+  res.send("thanks webhook");
+  io.emit("webhook", req.body);
 });
 
 const DB = process.env.DATABASE.replace("<password>", process.env.DBPASSWORD);
